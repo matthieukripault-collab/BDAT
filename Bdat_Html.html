@@ -1,0 +1,1244 @@
+
+    <!doctype html>
+    <html lang="en">
+    <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>BDAT — From Lab to Clinic (Prototype)</title>
+    <style>
+        :root{--bg:#f7f8fb;--card:#ffffff;--accent:#2b6cb0;--muted:#6b6b6b}
+        body{font-family:Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; margin:0;background:var(--bg);color:#222}
+        header{background:linear-gradient(90deg,#ffffff00, #ffffff);padding:28px 20px 16px;border-bottom:1px solid #e6e9ee}
+        .container{max-width:1500px;margin:28px auto;padding:0 20px}
+
+        .hero{display:flex;gap:20px;align-items:center}
+        .hero .meta{flex:1}
+        h1{margin:0 0 8px;font-size:28px}
+        p.lead{color:var(--muted);margin:0 0 12px}
+        .card{background:var(--card);border-radius:12px;padding:18px;box-shadow:0 6px 18px rgba(20,20,50,0.04);margin-bottom:18px}
+        .grid{display:grid;grid-template-columns:1fr }
+        img.sketch{width:100%;height:auto;border-radius:8px;border:1px dashed #ddd}
+        nav.toc{position:sticky;top:20px}
+        .toc h3{margin:0 0 10px;font-size:14px}
+        .toc ul{padding-left:16px;margin:0}
+        .toc a{display:block;padding:6px 0;color:#154a7a;text-decoration:none}
+        section h2{margin-top:6px}
+        .kbd{font-family:monospace;background:#f1f5f9;padding:4px 8px;border-radius:6px;font-size:13px}
+        footer{max-width:980px;margin:30px auto 80px;padding:0 20px;color:var(--muted);font-size:13px}
+        .ref{font-size:13px;color:var(--muted)}
+        .params{display:flex;gap:8px;flex-wrap:wrap}
+        .param{background:#eef5ff;padding:6px 10px;border-radius:999px;font-size:13px;color:#133a66}
+        .accordion{margin-top:8px}
+        .acc-item{border-top:1px solid #eef2f7}
+        .acc-button{background:none;border:0;width:100%;text-align:left;padding:12px 0;cursor:pointer;font-size:16px;font-weight:600;color:#154a7a}
+        .acc-panel{display:none;padding:6px 0 14px;color:#222}
+        .show{display:block}
+        .btn{display:inline-block;background:var(--accent);color:#fff;padding:8px 12px;border-radius:8px;text-decoration:none}
+        .study{margin-bottom:12px}
+        .study h4{margin:4px 0;font-size:15px;color:#154a7a}
+        .two-columns {display: flex;flex-wrap: wrap;gap: 30px;justify-content: center;margin: 20px 0;}
+        .col { width: 45%; in-width: 320px;}
+        .col img { width: 100%; border-radius: 6px; border: 1px solid #ccc}
+        .legend {font-size: 14px;text-align: justify;margin-top: 10px;line-height: 1.4;}
+        @media (max-width:880px){.grid{grid-template-columns:1fr} .toc{position:static;margin-top:10px}}
+    </style>
+    </head>
+    <body>
+    <header>
+        <div class="container hero">
+        <div class="meta">
+            <h1>BDAT — Bi-Directional Axial Transmission</h1>
+            <div class="params">
+            <div class="param">Author: J.-G. Minonzio</div>
+            <div class="param">Technique: Ultrasonic guided waves</div>
+            <div class="param">Measurement site: Distal radius (1/3) | Tibia</div>
+            </div>
+        </div>
+        </div>
+    </header>
+
+    <main class="container grid">
+        <!--<aside class="toc card">
+        <h3>Navigation</h3>
+       <ul>
+            <li><a href="#context">Context</a></li>
+            <li><a href="#protocol">Protocol (JoVE)</a></li>
+            <li><a href="#validation">Clinical studies & Validation</a></li>
+            <li><a href="#methods">Methods</a></li>
+            <li><a href="#showcase">GWSI</a></li>
+            <li><a href="#conclusion">Conclusion</a></li>
+        </ul>-->
+        <div>
+            <section id="bdat-intro" class="card">
+  <style>
+    #bdat-intro {background:#fff;border-radius:14px;padding:20px;line-height:1.6;}
+    #bdat-intro h2 {margin-top:0;color:#1d3557;}
+    #bdat-intro p {margin-bottom:12px;}
+    #bdat-intro em {color:#3a5ba0;}
+    #bdat-intro figure {background:#f8faff;border:1px solid #dce5f5;border-radius:10px;padding:10px;text-align:center;margin:15px 0;}
+    #bdat-intro figcaption {font-size:13px;color:#555;margin-top:6px;}
+    #bdat-intro .highlight {background:#eef5ff;padding:10px;border-radius:10px;margin-top:10px;}
+    @media (max-width:800px){#bdat-intro img{width:100%;height:auto;}}
+  </style>
+
+  <h2>Context & Objective</h2>
+
+  <p>
+Fragility fractures, in particular at the hip, remain a global burden, in the context of population ageing.   
+The current gold standard for detecting people at risk of fragility fractures, is  <strong>DXA</strong>  (Dual-energy X-ray Absorptiometry) providing bone mineral density, and used to diagnose osteoporosis.
+However DXA devices are bulky and therefore need a dedicated space.  Moreover they are not widely available in lot of countries, such as in South America. 
+  </p>
+
+Ultrasonic devices present DXA alternatives, due to their portability, non  ionizing properties and sensivity to mechanical properties. 
+For instance the <strong>BDAT</strong> — Bi-Directional Axial Transmission device measures ultrasonic guided waves at the forearm or leg and estimate two key features:
+ cortical thickness (Ct.Th) and cortical porosity (Ct.Po), both crucial indicators of bone strength.
+
+
+
+  <!--<figure>
+    Placeholder diagram
+    <svg viewBox="0 0 640 300" width="70%" height="auto" xmlns="http://www.w3.org/2000/svg">
+      <rect x="60" y="120" width="520" height="60" rx="12" fill="#e8edfa" stroke="#c4d0f0"/>
+      <rect x="45" y="90" width="25" height="120" rx="5" fill="#457b9d"/>
+      <rect x="570" y="90" width="25" height="120" rx="5" fill="#457b9d"/>
+      <path d="M70,150 C160,90 280,210 370,150 S520,90 580,150"
+            stroke="#1d3557" stroke-width="3" fill="none"/>
+      <text x="320" y="240" text-anchor="middle" font-size="13" fill="#1d3557">
+        Guided ultrasonic waves traveling along the bone
+      </text>
+    </svg>
+    <figcaption>BDAT sends ultrasonic waves along the bone and analyses their echoes.</figcaption>
+  </figure>-->
+
+  <p>
+    BDAT works like a “<em>stethoscope for bones</em>”. In just about five minutes per site,
+    it provides an estimate of the bone’s microstructure — without radiation,
+    without pain, and using compact equipment that fits in a small case.
+  </p>
+
+  <div class="highlight" style="text-align: center;">
+    <strong>Why BDAT matters ?</strong><br>
+
+     <strong>Safe:</strong> it uses harmless ultrasound waves instead of X-rays.<br>
+     <strong>Portable:</strong> it can be used at the patients in hospital, in local health centers or even at home.<br>
+     <strong>Fast:</strong> each measurement takes about 5 minutes, thanks to a robust protocol and guiding interface.<br>
+     <strong>Inclusive:</strong> brings advanced bone diagnostics to regions where DXA is not widely available.
+  
+  </div>
+  <p>
+    The device has already been successfully tested in hospitals in France, Germany, UK and Chile.
+    In these studies, BDAT successfully distinguished patients with fragility fractures from healthy controls,    achieving results comparable to DXA — and sometimes even better —  using a portable  and non-ionizing device
+  </p>
+
+  <figure>
+    <img src="C:\Users\Jean-Gabriel\Documents\biblio\Liste publi PDF\BDATchile1.jpg",
+    >
+        
+      
+    <figcaption>
+      Clinical use of BDAT at the distal forearm (radius) — a quick and non-invasive exam (source : <a href="https://doi.org/10.26904/RF-150-5529778987"> Reasearch features - 2023</a>).
+    </figcaption>
+  </figure>
+
+  <p>
+    Beyond research labs, BDAT is part of a wider movement to make
+    <strong>health technology accessible and preventive</strong>.
+    In Chile, for example, local hospitals such as <em>Hospital Gustavo Fricke</em>
+    have joined the project to screen older adults at risk of fracture.
+    According to the national press (<em>El Mostrador</em>, 2023),
+    this collaboration aims to develop a <strong>low-cost, portable</strong> solution
+    that could help thousands of Chileans — especially those living far from major hospitals —
+    to monitor their bone quality early and avoid future fractures.
+  </p>
+  <p> The International Bone Ultrasound Society (<a href="https://bone-ultrasound.org/">BoneUs</a>) promotes the development and progress of bone QUS in its different aspects, its technologies and applications </p>
+  <p>
+    The long-term vision is clear:
+    a world where anyone, anywhere, can have their bone quality checked
+    with a simple, safe, and affordable ultrasound test.
+  </p>
+
+  <p style="font-size:13px;color:#555;">
+    Sources: <br>
+    <a href="https://doi.org/10.26904/RF-150-5529778987">Research Features (2023) - “Jean-Gabriel Minonzio: Ultrasonic assessment of bone fragility” (English).</a> <br>
+    <a href="https://www.elmostrador.cl/agenda-pais/agenda-innovacion/2023/06/12/el-innovador-estudio-chileno-de-densitometria-osea-a-traves-de-ultrasonido/">El Mostrador (2023) - “El innovador estudio chileno de densitometría ósea a través de ultrasonido” (Spanish).</a><br>
+ <a href= "https://www.uv.cl/archivo-noticias-uv/26465-con-ultrasonido-y-biopsia-academico-de-informatica-uv-busca-diferenciar-fracturas-por-fragilidad-de-cadera"> Universidad de Valparaiso (2024) - "Con ultrasonido y biopsia, académico de Informática UV busca diferenciar fracturas por fragilidad de cadera" (Spanish).  </a>
+</p>
+        </section>
+
+      
+
+        <section id="protocol-section" class="card">
+        <div class="acc-item">
+                <button class="acc-button" data-target="protocol-panel">  <h2>Protocol </h2> </button>
+                <div id="protocol-panel" class="acc-panel">
+           
+            <p>A dedicated ultrasonic probe is positioned at the distal one-third of the radius with coupling gel. 
+                The system acquires multiple bidirectional transmissions to extract first-arrival and guided-wave mode velocities (<strong>vFAS, vA0</strong>) 
+                and builds a guided-wave spectral image for inversion, providing cortical thickness (<strong>Ct.Th</strong>) and cortical porosity (<strong>Ct.Pobcm</strong>). 
+                A standard acquisition protocol collects ~10 captures and retains coherent series for analysis. The JoVE article provides step-by-step guidance for operator positioning and quality checks.</p>
+            <div style="text-align: center; margin : 20px 0;">
+            </div>
+            <div style="text-align: center; margin : 20px 0;">
+            <iframe id="embed-iframe" allowTransparency="true" allow="encrypted-media *" allowfullscreen height="415" width="460" border="0" scrolling="no" frameborder="0" marginwheight="0" marginwidth="0" src="https://app.jove.com/embed/player?id=66985&access=419395b450&t=1&s=1&fpv=1">nan toi</iframe><div style="text-align: center; margin : 20px 0;"></div>
+        <p class="ref" style="text-align: center;">Dubot, B., Deniau, M., Ramiandrisoa, D., Minonzio, J. Cortical Bone Assessment Using Ultrasonic Guided Waves: A Reproducibility Study in a Healthy Population. J. Vis. Exp. (215), e66985,(2025). DOI: <a href="https://doi.org/10.3791/66985">10.3791/66985</a> .</p>
+            <h3> Exemple of acquisition</h3>
+            <img src="C:\Users\Jean-Gabriel\Documents\biblio\Liste publi PDF\Captura de pantalla 2025-11-10 133625.png">
+            <p> Jove 2025</p>
+        </div>
+        </div>
+        </div>
+        </section>
+    
+        
+        <section id="validation" class="card">
+            <h2>Clinical Studies & Validation</h2>
+            <div class="accordion">
+            <!-- Clinical Studies -->
+            <div class="acc-item">
+                <button class="acc-button" data-target="clinical">Clinical Studies</button>
+                <div id="clinical" class="acc-panel">
+
+    <img src="C:\Users\Jean-Gabriel\Documents\biblio\Liste publi PDF\clinicalstudies.png">
+    <!--<table style="width:100%; border-collapse: collapse; font-size:14px;">
+    <thead style="background:#eef5ff;">
+        <tr>
+        <th style="border:1px solid #ccc; padding:8px;">Ref / Author (Year)</th>
+        <th style="border:1px solid #ccc; padding:8px;">Location / Country</th>
+        <th style="border:1px solid #ccc; padding:8px;">Population</th>
+        <th style="border:1px solid #ccc; padding:8px;">Measurement Site</th>
+        <th style="border:1px solid #ccc; padding:8px;">Probe / Frequency</th>
+        <th style="border:1px solid #ccc; padding:8px;">Measured Parameters</th>
+        <th style="border:1px solid #ccc; padding:8px;">Comparison</th>
+        <th style="border:1px solid #ccc; padding:8px">Main Findings</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+        <td style="border:1px solid #ccc; padding:8px;">[1] Talmant (2009)</td>
+        <td style="border:1px solid #ccc; padding:8px;">Cochin & Ste Périne Hospitals, Paris, France</td>
+        <td style="border:1px solid #ccc; padding:8px;">166 postmenopausal women (20–99 y) </td>
+        <td style="border:1px solid #ccc; padding:8px;">Forearm</td>
+        <td style="border:1px solid #ccc; padding:8px;">BDAT 1 MHz</td>
+        <td style="border:1px solid #ccc; padding:8px;">vFAS</td>
+        <td style="border:1px solid #ccc; padding:8px;">DXA</td>
+        <td style="border:1px solid #ccc; padding:8px;">DXA (OR = 2.07, AUC = 0.77)  <br>  vFAS (OR = 1.81, AUC = 0.77).</td>
+        </tr>
+        <tr>
+        <td style="border:1px solid #ccc; padding:8px;">[2] Schneider (2015a)</td>
+        <td style="border:1px solid #ccc; padding:8px;">Charité University, Berlin, Germany</td>
+        <td style="border:1px solid #ccc; padding:8px;">51 postmenopausal women (52–89 y)</td>
+        <td style="border:1px solid #ccc; padding:8px;">Forearm & leg</td>
+        <td style="border:1px solid #ccc; padding:8px;">BDAT 1 MHz</td>
+        <td style="border:1px solid #ccc; padding:8px;">vFAS</td>
+        <td style="border:1px solid #ccc; padding:8px;">DXA</td>
+        <td style="border:1px solid #ccc; padding:8px;">DXA (OR = 1.89, AUC = 0.81)  <br>  vFAS (OR = 4.10, AUC = 0.81).</td>
+        </tr>
+        <tr>
+        <td style="border:1px solid #ccc; padding:8px;">[3] Schneider (2015b)</td>
+        <td style="border:1px solid #ccc; padding:8px;">Charité University, Berlin, Germany</td>
+        <td style="border:1px solid #ccc; padding:8px;">58 postmenopausal women (42–89 y)</td>
+        <td style="border:1px solid #ccc; padding:8px;">Forearm & leg</td>
+        <td style="border:1px solid #ccc; padding:8px;">BDAT 1 MHz</td>
+        <td style="border:1px solid #ccc; padding:8px;">vFAS</td>
+        <td style="border:1px solid #ccc; padding:8px;">DXA</td>
+        <td style="border:1px solid #ccc; padding:8px;">DXA (OR = 1.89, AUC = 0.87)  <br>  vFAS (OR = 2.60, AUC = 0.89).</td>
+        </tr>
+        <tr>
+        <td style="border:1px solid #ccc; padding:8px;">[4] Minonzio (2019)</td>
+        <td style="border:1px solid #ccc; padding:8px;">Cochin Hospital (AP-HP), Paris, France</td>
+        <td style="border:1px solid #ccc; padding:8px;">201 postmenopausal women (55-80 y)</td>
+        <td style="border:1px solid #ccc; padding:8px;">Forearm </td>
+        <td style="border:1px solid #ccc; padding:8px;">BDAT 1 MHz</td>
+        <td style="border:1px solid #ccc; padding:8px;">Ct.Th, Ct.Po</td>
+        <td style="border:1px solid #ccc; padding:8px;">DXA</td>
+        <td style="border:1px solid #ccc; padding:8px;">DXA (OR = 1.48; AUC = 0.72) <br>  Ct.Po (OR = 1.39, AUC = 0.71).</td>
+        </tr>
+        <tr>
+        <td style="border:1px solid #ccc; padding:8px;">[5] Minonzio (2022)</td>
+        <td style="border:1px solid #ccc; padding:8px;">Marien & St. Anna Hospitals, Herne, Germany</td>
+        <td style="border:1px solid #ccc; padding:8px;">106 men and women (41-95 y)</td>
+        <td style="border:1px solid #ccc; padding:8px;">Forearm </td>
+        <td style="border:1px solid #ccc; padding:8px;">BDAT 1 MHz</td>
+        <td style="border:1px solid #ccc; padding:8px;">vFAS, vA0, Ct.Th, Ct.Po, Ct.Po/Ct.Th</td>
+        <td style="border:1px solid #ccc; padding:8px;">DXA</td>
+        <td style="border:1px solid #ccc; padding:8px;">DXA (OR = 7.1, AUC = 0.74)  <br>  BDAT (OR = 16.4, AUC = 0.78) .</td>
+        </tr>
+        <tr>
+        <td style="border:1px solid #ccc; padding:8px;">[6] Rojo (2023)</td>
+        <td style="border:1px solid #ccc; padding:8px;">Hospital Dr. Gustavo Fricke, Viña del Mar, Chile</td>
+        <td style="border:1px solid #ccc; padding:8px;">52 older adults (51–98 y)</td>
+        <td style="border:1px solid #ccc; padding:8px;">Forearm</td>
+        <td style="border:1px solid #ccc; padding:8px;">BDAT 1 MHz</td>
+        <td style="border:1px solid #ccc; padding:8px;">vFAS, vA0, Ct.Th, Ct.Po, Ct.Po/Ct.Th</td>
+        <td style="border:1px solid #ccc; padding:8px;">DXA </td>
+    <td style="border:1px solid #ccc; padding:8px;"> DXA (OR = 3.4, AUC = 0.63)  <br>  BDAT  (OR = 6.4, AUC = 0.72)  </td>
+        </tr>
+    </tbody>
+    </table> -->
+
+    <p style="font-size:13px; color:#555; margin-top:10px;">
+    <b>References:</b><br>
+     
+    [1] Talmant M., Kolta S., Roux C., Haguenauer D., Bossy E., Laugier P.
+      <i>In vivo performance evaluation of bi-directional ultrasonic axial transmission for cortical bone assessment.</i>
+      Ultrasound in Medicine & Biology, 2009.
+      DOI: <a href="https://doi.org/10.1016/j.ultrasmedbio.2008.12.008" target="_blank">10.1016/j.ultrasmedbio.2008.12.008</a><br>
+      
+    [2] Schneider J., Raum K., Pumberger M., Zippelius T., Hoff E., Strube P., Putzier M., Minonzio J.-G., Laugier P.
+      <i>Prospective discrimination of vertebral fractures by axial transmission ultrasound using optimized first arriving signal velocity measurements.</i>
+      IEEE International Ultrasonics Symposium (IUS), 2015.
+      DOI: <a href="https://doi.org/10.1109/ULTSYM.2015.0513" target="_blank">10.1109/ULTSYM.2015.0513</a><br>
+    [3] Schneider J., Varga P., Raum K., Pumberger M., Zippelius T., Hoff E., Strube P., Putzier M., Minonzio J.-G., Laugier P.
+      <i>Multisite ultrasound axial transmission study in postmenopausal women using optimized first arriving signal velocity measurements.</i>
+      European Symposium on Ultrasonic Characterization of Bone (ESUCB), 2015.
+      DOI: <a href="https://doi.org/10.1109/ESUCB.2015.7169895" target="_blank">10.1109/ESUCB.2015.7169895</a><br>
+    [4] Minonzio J.-G., Bochud N., Vallet Q., Chappard C., Talmant M., Laugier P.
+      <i>Ultrasound-based estimates of cortical bone thickness and porosity are associated with nontraumatic fractures in postmenopausal women: a pilot study.</i>
+      Journal of Bone and Mineral Research, 2019.
+      DOI: <a href="https://doi.org/10.1002/jbmr.3733" target="_blank">10.1002/jbmr.3733</a><br>
+    [5] Minonzio J.-G., Ramiandrisoa D., Schneider J., Kohut E., Streichhahn M., Stervbo U., <em>et al</em>.
+      <i>Bi-Directional Axial Transmission measurements applied in a clinical environment.</i>
+      PLoS ONE, 2022.
+      DOI: <a href="https://doi.org/10.1371/journal.pone.0277831" target="_blank">10.1371/journal.pone.0277831</a> — Data available at: <a href="https://doi.org/10.17605/OSF.IO/XY9QV" target="_blank">10.17605/OSF.IO/XY9QV</a><br>
+    [6] Rojo F., Schneider J., Minonzio J.-G., Laugier P., Vallet Q.
+      <i>Classification of hip fragility fractures in older adults using an ultrasonic device.</i>
+      IEEE International Ultrasonics Symposium (IUS), 2023.
+      DOI: <a href="https://doi.org/10.1109/IUS51837.2023.10307317" target="_blank">10.1109/IUS51837.2023.10307317</a>
+    </p>
+
+
+    <!--          
+                <div class="study">
+                    <p><strong>Location :</strong> Hôpital Cochin, Hopital Sainte Périne, Paris, France <br>
+                    <strong>Population:</strong> 166 postmenopausal women.<br>
+                    <strong>Methods:</strong> Forearm ; BDAT 1 MHz probe vFAS vs DXA.<br>
+                    <strong>Main findings:</strong> All FF, vFAS (OR = 1.81, AUC = 0.77) vs DXA (OR =2.07, AUC = 0.77). </li><br>
+                    <strong>Failure rate:</strong> 13 % <br>
+                    <em><small>Ref: Talmant M., Kolta S., Roux C., Haguenauer D., Vedel I., Cassou B., Bossy E., Laugier P. In vivo performance evaluation of bi-directional ultrasonic axial transmission for cortical bone assessment. Ultrasound in Medicine & Biology. </em>
+                <em> DOI :<a href="https://doi.org/10.1016/j.ultrasmedbio.2008.12.008"> 10.1016/j.ultrasmedbio.2008.12.008</small></a></em></p>
+                </div>
+
+                <div class="study">
+                    <p><strong>Location :</strong> The Charité-Universitätsmedizin, Berlin, Germany <br>
+                    <strong>Population:</strong> 51 postmenopausal women (52-89 years).<br>
+                    <strong>Methods:</strong> Forearm and tibia ; BDAT (0.5-1.5 MHz) probe vFAS vs DXA.<br>
+                    <strong>Main findings:</strong>  All FF, vFAS (OR = 4.10, AUC = 0.81) vs DXA (OR =1.89, AUC = 0.81). </li><br>
+                    <strong>Failure rate:</strong> ? % <br>
+                    <em><small>Ref: J. Schneider, K. Raum, M. Pumberger, T. Zippelius, E. Hoff, P. Strube, M. Putzier, J.G. Minonzio, P. Laugier. Prospective discrimination of vertebral fractures by axial transmission ultrasound using optimized first arriving signal velocity measurements. 2015 IEEE International Ultrasonics Symposium (IUS). </em>
+                <em> DOI :<a href="https://doi.org/10.1109/ULTSYM.2015.0513"> 10.1109/ULTSYM.2015.0513</small></a></em></p>
+                </div>
+
+                <div class="study">
+                    <p><strong>Location :</strong> The Charité-Universitätsmedizin, Berlin, Germany <br>
+                    <strong>Population:</strong> 58 postmenopausal women (42-89 years).<br>
+                    <strong>Methods:</strong> Forearm and tibia ; BDAT (0.5-1.5 MHz) probe vFAS vs DXA.<br>
+                    <strong>Main findings:</strong> All FF, vFAs (OR = 2.60, AUC = 0.89) vs DXA (OR = 1.89, AUC = 0.87). </li><br>
+                    <strong>Failure rate:</strong> ? % <br>
+                    <em><small>Ref: J. Schneider, P. Varga, K. Raum, M. Pumberger, T. Zippelius, E. Hoff, P. Strube, M. Putzier, J.G. Minonzio, P. Laugier. Multisite ultrasound axial transmission study in postmenopausal women using optimized first arriving signal velocity measurements . 2015 6th European Symposium on Ultrasonic Characterization of Bone. </em>
+                <em> DOI :<a href="https://doi.org/10.1109/ESUCB.2015.7169895"> 10.1109/ESUCB.2015.7169895</small></a></em></p>
+                </div>
+                
+                <div class="study">
+                    <p><strong>Location :</strong> Hôpital Cochin, Paris (AP-HP), France <br>
+                    <strong>Population:</strong> 201 postmenopausal women.<br>
+                    <strong>Methods:</strong> Forearm ; BDAT 1 MHz, Ct.Po, Ct.Th vs DXA.<br>
+                    <strong>Main findings:</strong> All FF, Ct.Po (OR = 1.39; AUC = 0.71) vs DXA (OR = 1.48; AUC = 0.72); Hip FF, Ct.Th (OR = 2.01 AUC = 0.77) vs DXA ( OR = 2.21; AUC = 0.70). <br> <!-- Or= Odds ratio-->
+                                                        <!--<li> Vertebral fractures: Ct.Po, (OR = 1.96; AUC = 0.84)   </li>
+                                                        <li> Wrist fractures Ct.Po (OR = 1.80; AUC = 0.71) </li>
+                    <strong>Failure rate:</strong> 20 % (pilot clinical study)<br>
+                    <em><small>Ref: Minonzio J-G, Bochud N, Vallet Q, Ramiandrisoa D, Etcheto A, Briot K, Kolta S, Roux C, Laugier P. Ultrasound-based estimates of cortical bone thickness and porosity are associated with nontraumatic fractures in postmenopausal women: a pilot study. J Bone Miner Res. 2019;34(9):1585-1596. </em><br>
+                    <em>DOI :<a href="https://doi.org/10.1002/jbmr.3733"> 10.1002/jbmr.3733</a></small></em> </p>
+                </div>
+                <div class="study">
+                    <p><strong>Location :</strong> Marien & St. Anna Hospitals, Herne, Germany<br>
+                    <strong>Population:</strong> 106 men and women.<br>
+                    <strong>Methods:</strong> Forearm ; BDAT 1 MHz, Ct.Po, Ct.Th, vA0, vFAS vs DXA.<br>
+                    <strong>Main findings:</strong>
+                                                        All FF :  VFAS, Ct.Po/Ct.Th,  OR = 2.5 [1.6-3.4] AUC = 0.63 [0.62-0.65].
+                                                        NVF : VA0. Ct.Th, Ct.Po and Ct.Po/Ct.Po, age OR = 7.5 [6.0-9.1], AUC =0.75 [0.73-0.76].
+                    <strong>Failure rate:</strong> 9 %<br>
+                    <em><small> Ref: Minonzio J-G, Ramiandrisoa D, Schneider J, Kohut E, Streichhahn M, Stervbo U, Wirth R, Westhoff TH, Raum K, Babel N. Bi-Directional Axial Transmission measurements applied in a clinical environment.PLoS ONE. 2022;17(12):e0277831. </em>
+                    <em>DOI :<a href="https://doi.org/10.1371/journal.pone.0277831"> 10.1371/journal.pone.0277831</em></a></small></p>
+                </div>
+                <div class="study">
+                    <p><strong>Location :</strong> Hospital Dr. Gustavo Fricke, Viña del Mar, Chile<br>
+                    <strong>Population:</strong> 52 older adults (51-98 years).<br>
+                    <strong>Methods:</strong> Forearm; BDAT 1 MHzt,VFAS & VA0, Ct.Th, Ct.Po.<br>
+                    <strong>Main findings:</strong> Hip fractures discriminated; AUC up to 0.82 when adjusted for age/sex.<br>
+                    <strong>Failure rate:</strong> 4 %<br>
+                    <em> <small>Ref: Rojo F., Martínez-Flores R., Martínez A., Dinamarca-Montecinos J.L., Minonzio J-G. Classification of hip fragility fractures in older adults using an ultrasonic device. Proceedings IEEE International Ultrasonics Symposium (IUS). Montreal, QC, Canada. 2023. </em>
+                    <em>DOI :<a href="https://doi.org/10.1109/IUS51837.2023.10307317"> 10.1109/IUS51837.2023.10307317</em></small></a></p>
+                </div>
+                </div>-->
+            </div>
+            <!-- Validation Ex vivo -->
+            <div class="acc-item">
+                <button class="acc-button" data-target="exvivo">Validation — <em>ex vivo</em></button>
+                <div id="exvivo" class="acc-panel">
+    <img src="C:\Users\Jean-Gabriel\Documents\biblio\Liste publi PDF\exvivo.png">
+    <!--<table style="width:100%; border-collapse: collapse; font-size:14px;">
+    <thead style="background:#eef5ff;">
+        <tr>
+        <th style="border:1px solid #ccc; padding:8px;">Ref / Author (Year)</th>
+        <th style="border:1px solid #ccc; padding:8px;">Specimen</th>
+        <th style="border:1px solid #ccc; padding:8px;">Age (years)</th>
+        <th style="border:1px solid #ccc; padding:8px;">Probe / Frequency</th>
+        <th style="border:1px solid #ccc; padding:8px;">Measured Parameters</th>
+        <th style="border:1px solid #ccc; padding:8px;">Comparison</th>
+        <th style="border:1px solid #ccc; padding:8px;">Main Findings</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+        <td style="border:1px solid #ccc; padding:8px;">[1] Mitton (2014)</td>
+        <td style="border:1px solid #ccc; padding:8px;">17 ribs</td>
+        <td style="border:1px solid #ccc; padding:8px;">67-80</td>
+        <td style="border:1px solid #ccc; padding:8px;">BDAT 1 MHz </td>
+        <td style="border:1px solid #ccc; padding:8px;">vFAS</td>
+        <td style="border:1px solid #ccc; padding:8px;">µQCT, mechanical test</td>
+        <td style="border:1px solid #ccc; padding:8px;">
+            Ct.Th (OR = 2.27, AUC = 0.74), Ct.Po (OR = 2.35, AUC = 0.76).<br>
+            vFAS vs Young's modulus: R² = 0.61
+        </td>
+        </tr>
+        <tr>
+        <td style="border:1px solid #ccc; padding:8px;">[2] Minonzio (2018a)</td>
+        <td style="border:1px solid #ccc; padding:8px;">30 radius</td>
+        <td style="border:1px solid #ccc; padding:8px;">50-96</td>
+        <td style="border:1px solid #ccc; padding:8px;">BDAT 1 MHz </td>
+        <td style="border:1px solid #ccc; padding:8px;">Ct.Th, Ct.Po</td>
+        <td style="border:1px solid #ccc; padding:8px;">DXA, mechanical test</td>
+        <td style="border:1px solid #ccc; padding:8px;">
+            Ct.Th (OR = 2.27, AUC = 0.74), Ct.Po (OR = 2.35, AUC = 0.76).<br>
+            Adjusted on diameter:<br> Ct.Po (AUC = 0.80) <br> DXA (AUC = 0.82)
+        </td>
+        </tr>
+        <tr>
+        <td style="border:1px solid #ccc; padding:8px;">[3] Minonzio (2018b)</td>
+        <td style="border:1px solid #ccc; padding:8px;">27 radius & 13 tibiae</td>
+        <td style="border:1px solid #ccc; padding:8px;">50-98</td>
+        <td style="border:1px solid #ccc; padding:8px;">BDAT 1 MHz</td>
+        <td style="border:1px solid #ccc; padding:8px;">Ct.Th, Ct.Po</td>
+        <td style="border:1px solid #ccc; padding:8px;">µQCT</td>
+        <td style="border:1px solid #ccc; padding:8px;">
+            Ct.Th R² = 0.89 (RMSE = 0.3 mm)<br> Ct.Po R² = 0.63 (RMSE = 1.8 %)
+        </td>
+        </tr>
+        <tr>
+        <td style="border:1px solid #ccc; padding:8px;">[4] Schneider (2019)</td>
+        <td style="border:1px solid #ccc; padding:8px;">17 tibiae</td>
+        <td style="border:1px solid #ccc; padding:8px;">69-94</td>
+        <td style="border:1px solid #ccc; padding:8px;">BDAT 0.5 MHz</td>
+        <td style="border:1px solid #ccc; padding:8px;">Ct.Th, Ct.Po, vFAS, vA0</td>
+        <td style="border:1px solid #ccc; padding:8px;">µQCT</td>
+        <td style="border:1px solid #ccc; padding:8px;">
+            Ct.Th R² = 0.92 (RMSE = 0.2 mm)<br> Ct.Po R² = 0.83 (RMSE = 2.2 %)
+        </td>
+        </tr>
+    
+    </tbody>
+    </table> -->
+
+    <p style="font-size:13px; color:#555; margin-top:10px;">
+    <b>References:</b><br>
+    [1] Mitton D., Minonzio J.-G., Talmant M., Ellouz R., Rongieras F., Laugier P., Bruyère-Garnier K.
+      <i>Non-destructive assessment of human ribs mechanical properties using quantitative ultrasound.</i>
+      Journal of Biomechanics, 2014.
+      DOI: <a href="https://doi.org/10.1016/j.jbiomech.2014.01.052" target="_blank">10.1016/j.jbiomech.2014.01.052</a><br>
+    [2] Minonzio J.-G., Zapata E., Bochud N., Vallet Q., Rongieras F., Pialat J.-B.
+      <i>Ex vivo radius fracture discrimination from cortical thickness and porosity obtained by axial transmission.</i>
+      IEEE International Ultrasonics Symposium (IUS), 2018.
+      DOI: <a href="https://doi.org/10.1109/ULTSYM.2018.8579720" target="_blank">10.1109/ULTSYM.2018.8579720</a><br>
+    [3] Minonzio J.-G., Bochud N., Vallet Q., Bala Y., Ramiandrisoa D., Follet H., Mitton D., Laugier P.
+      <i>Cortical thickness and porosity assessment using ultrasound guided waves: an ex vivo validation.</i>
+      Bone, 2018.
+      DOI: <a href="https://doi.org/10.1016/j.bone.2018.07.018" target="_blank">10.1016/j.bone.2018.07.018</a><br>
+    [4] Schneider J., Iori G., Ramiandrisoa D., Hammami M., Gräsel M., Chappard C., Barkmann R., Laugier P., Grimal Q., Minonzio J.-G., Raum K.
+      <i>Ex vivo cortical porosity and thickness predictions at the tibia using full-spectrum ultrasonic guided-wave analysis.</i>
+      Archives of Osteoporosis, 2019.
+      DOI: <a href="https://doi.org/10.1007/s11657-019-0578-1" target="_blank">10.1007/s11657-019-0578-1</a><br></p>
+
+
+                
+                
+                <!--<div class="study">
+                    <p><strong>Specimen:</strong> 5 radius. <br>
+                    <strong>Measurement site:</strong> Radius, BDAT 1 MHz.<br>
+                    <strong>Methods:</strong> BDAT (1 MHz) vs HR-pQCT .<br>
+                    <strong>Main findings:</strong> Ct.Th and Ct.Po significant for fracture discrimination (AUC = 0.74-0.80).<br>
+                    <em><small>Ref: J Foiret, J-G Minonzio, C Chappard, M Talmant, P Laugier, IEEE Transactions on Ultrasonics, Ferroelectrics, and Fr 1478 equency Control, vol. 61, no. 9, September 2014. </em><br>
+                    <em>DOI :<a href="https://doi.org/10.1109/ULTSYM.2018.8579720"> 10.1109/ULTSYM.2018.8579720</small></a></em></p>
+                </div>
+                <div class="study">
+                    <p><strong>Specimen:</strong> 30 radius (50-96 years old). <br>
+                    <strong>Measurement site:</strong> Radius, BDAT 1 MHz.<br>
+                    <strong>Methods:</strong> BDAT (1 MHz) vs mechanical test .<br>
+                    <strong>Main findings:</strong><ul>
+                                                        <li> Fracture discrimination significant: Ct.Th (OR = 2.27, AUC = 0.74) and Ct.Po (OR = 2.35, AUC = 0.76).</li>
+                                                        <li> Adjusted for radius diameter: Ct.Po (AUC = 0.80) comparable to DXA (AUC = 0.82).</li>
+                    </ul>
+                    <em><small>Ref: JG Minonzio, E Zapata, N Bochud, Q Vallet, F Rongieras, JB Pialat, ...
+    2018 IEEE International Ultrasonics Symposium (IUS), 1-4, Ex vivo radius fracture discrimination from cortical thickness and porosity obtained by axial. </em>
+                    <em>DOI :<a href="https://doi.org/10.1109/ULTSYM.2018.8579720"> 10.1109/ULTSYM.2018.8579720</small></a></em></p>
+                </div>
+                <div class="study">
+                    <p><strong>Specimen:</strong> 17 tibia (69-94 years old).<br>
+                    <strong>Measurement site:</strong> Tibia, BDAT 0.5 MHz.<br>
+                    <strong>Methods:</strong> BDAT (0.5 MHz) vs µCT.<br>
+                    <strong>Main findings:</strong> Ct.Th (R² = 0.92, RMSE = 0.2 mm); Ct.Po (R² = 0.83, RMSE = 2.2%). <br>                                                  
+                    <em><small>Ref: J Schneider, G Iori, D Ramiandrisoa, M Hammami, M Gräsel, C Chappard, R Barkmann, P Laugier, Q Grimal, J-G Minonzio & K Raum . Ex vivo cortical porosity and thickness predictions at the tibia using full-spectrum ultrasonic guided-wave analysis. Arch Osteoporos. 14, 1-11 (2019). </em><br>
+                    <em>DOI :<a href="https://doi.org/10.1007/s11657-019-0578-1"> 10.1007/s11657-019-0578-1</small></a></em></p>
+                </div>
+                <div class="study">
+                <h4>Location : Départment Anatomie Rockefeller, Lyon, France</h4>
+                    <p><strong>Specimen:</strong> 40 radius & tibia (50-98 years old).<br>
+                    <strong>Measurement site:</strong> Radius & Tibia.<br>
+                    <strong>Methods:</strong> BDAT (1 MHz) vs µCT.<br>
+                    <strong>Main findings:</strong> Ct.Th (R² = 0.89, RMSE = 0.3 mm); Ct.Po (R² = 0.63, RMSE = 1.8%). <br>
+                    <em><small>Ref: J-G. Minonzio, N. Bochud , Q. Vallet, Y. Bala, D. Ramiandrisoa, H. Follet, D. Mitton, P. Laugier. Cortical thickness and porosity assessment using ultrasound guided waves: An ex vivo validation. Bone. 116, 111-119 (2018). </em>
+                    <em>DOI :<a href="https://doi.org/10.1016/j.bone.2018.07.018"> 10.1016/j.bone.2018.07.018</small></a></em></p>
+                </div>
+                </div>-->
+            </div>
+            <!-- Validation In vivo -->
+            <div class="acc-item">
+                <button class="acc-button" data-target="invivo">Validation — <em>in vivo</em></button>
+                <div id="invivo" class="acc-panel">
+    <img src="C:\Users\Jean-Gabriel\Documents\biblio\Liste publi PDF\invivo.png">
+    <!--<table style="width:100%; border-collapse: collapse; font-size:14px;">
+    <thead style="background:#eef5ff;">
+        <tr>
+        <th style="border:1px solid #ccc; padding:8px;">Ref / Author (Year)</th>
+        <th style="border:1px solid #ccc; padding:8px;">Population</th>
+        <th style="border:1px solid #ccc; padding:8px;">Age (years)</th>
+        <th style="border:1px solid #ccc; padding:8px;">Measurement Site</th>
+        <th style="border:1px solid #ccc; padding:8px;">Probe / Frequency</th>
+        <th style="border:1px solid #ccc; padding:8px;">Measured Parameters</th>
+        <th style="border:1px solid #ccc; padding:8px;">Comparison</th>
+        <th style="border:1px solid #ccc; padding:8px;">Main Findings</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+        <td style="border:1px solid #ccc; padding:8px;">[1] Vallet (2016)</td>
+        <td style="border:1px solid #ccc; padding:8px;">14 (12 male, 2 female) </td>
+        <td style="border:1px solid #ccc; padding:8px;">23-58</td>
+        <td style="border:1px solid #ccc; padding:8px;">Forearm</td>
+        <td style="border:1px solid #ccc; padding:8px;">BDAT 1 MHz</td>
+        <td style="border:1px solid #ccc; padding:8px;">Ct.Th</td>
+        <td style="border:1px solid #ccc; padding:8px;">HR-pQCT</td>
+        <td style="border:1px solid #ccc; padding:8px;">
+            Ct.Th R² = 0.70
+        </td>
+        </tr>
+        <tr>
+        <td style="border:1px solid #ccc; padding:8px;">[2] Schneider (2019)</td>
+        <td style="border:1px solid #ccc; padding:8px;">20 (12 male, 8 female ) </td>
+        <td style="border:1px solid #ccc; padding:8px;">37-65</td>
+        <td style="border:1px solid #ccc; padding:8px;">Leg</td>
+        <td style="border:1px solid #ccc; padding:8px;">BDAT 0.5 MHz</td>
+        <td style="border:1px solid #ccc; padding:8px;">Ct.Th, Ct.Po, vFAS, vA0</td>
+        <td style="border:1px solid #ccc; padding:8px;">pQCT</td>
+        <td style="border:1px solid #ccc; padding:8px;">
+            Ct.Th R² = 0.90 <br>
+            Ct.Po R² = 0.57
+        </td>
+        </tr>
+        <tr>
+        <td style="border:1px solid #ccc; padding:8px;">[3] Behforootan (2022)</td>
+        <td style="border:1px solid #ccc; padding:8px;">19 (12 male, 7 female) </td>
+        <td style="border:1px solid #ccc; padding:8px;">56-76</td>
+        <td style="border:1px solid #ccc; padding:8px;">Forearm & Leg</td>
+        <td style="border:1px solid #ccc; padding:8px;">BDAT 0.5 MHz & 1 MHz</td>
+        <td style="border:1px solid #ccc; padding:8px;">Ct.Th, Ct.Po, vFAS</td>
+        <td style="border:1px solid #ccc; padding:8px;">Mechanical testing (Instron 5565)</td>
+        <td style="border:1px solid #ccc; padding:8px;">
+            Ct.Po/Density : R²=0.34<br>
+            VFAS/Density : R²=0.36
+        </td>
+        </tr>
+    
+        <tr>
+        <td style="border:1px solid #ccc; padding:8px;">[4] Dubot (2025)</td>
+        <td style="border:1px solid #ccc; padding:8px;">14 (8 male, 6 female) </td>
+        <td style="border:1px solid #ccc; padding:8px;">21-53</td>
+        <td style="border:1px solid #ccc; padding:8px;">Forearm</td>
+        <td style="border:1px solid #ccc; padding:8px;">BDAT 1 MHz</td>
+        <td style="border:1px solid #ccc; padding:8px;">Ct.Th, Ct.Po, vFAS, vA0</td>
+        <td style="border:1px solid #ccc; padding:8px;">3 operators (reproducibility)</td>
+        <td style="border:1px solid #ccc; padding:8px;">
+            ICC : <br>vFAS = 0.91 ;<br> Ct.th = 0.87 ;<br> Ct.Po = 0.80 ;<br> vA0 = 0.76.
+        </td>
+        </tr>
+
+        <tr>
+        <td style="border:1px solid #ccc; padding:8px;">[5] Minonzio (2025)</td>
+        <td style="border:1px solid #ccc; padding:8px;">66 (15 male, 41 female) </td>
+        <td style="border:1px solid #ccc; padding:8px;">18-87</td>
+        <td style="border:1px solid #ccc; padding:8px;">Forearm</td>
+        <td style="border:1px solid #ccc; padding:8px;">BDAT 1 MHz</td>
+        <td style="border:1px solid #ccc; padding:8px;">Ct.Th, Ct.Po</td>
+        <td style="border:1px solid #ccc; padding:8px;">HR-pQCT</td>
+        <td style="border:1px solid #ccc; padding:8px;">
+            Ct.Th R² = 0.89 (RMSE = 0.2 mm)<br>
+            Ct.Po R² = 0.57(RMSE = 3 %)
+        </td>
+        </tr>
+    
+
+    </tbody>
+    </table>-->
+
+    <p style="font-size:13px; color:#555; margin-top:10px;">
+    <b>References:</b><br>
+    [1] Vallet Q., Bochud N., Chappard C., Laugier P., Minonzio J.-G.
+      <i>In vivo characterization of cortical bone using guided waves measured by axial transmission.</i>
+      IEEE Transactions on Ultrasonics, Ferroelectrics, and Frequency Control, 2016.
+      DOI: <a href="https://doi.org/10.1109/TUFFC.2016.2587079" target="_blank">10.1109/TUFFC.2016.2587079</a><br>
+    [2] Schneider J., Ramiandrisoa D., Armbrecht G., Ritter J., Felsenberg D., Raum K., Minonzio J.-G.
+      <i>In vivo measurements of cortical thickness and porosity at the proximal third of the tibia using guided waves: comparison with site-matched pQCT and distal HR-pQCT.</i>
+      Ultrasound in Medicine & Biology, 2019.
+      DOI: <a href="https://doi.org/10.1016/j.ultrasmedbio.2019.01.008" target="_blank">10.1016/j.ultrasmedbio.2019.01.008</a><br>
+    [3] Behforootan S., Thorniley M., Minonzio J.-G., Boughton O., Karia M., Bhattacharya R., Hansen U., Cobb J., Abel R.
+      <i>Can guided wave ultrasound predict bone mechanical properties at the femoral neck in patients undergoing hip arthroplasty.</i>
+      Journal of the Mechanical Behavior of Biomedical Materials, 2022.
+      DOI: <a href="https://doi.org/10.1016/j.jmbbm.2022.105468" target="_blank">10.1016/j.jmbbm.2022.105468</a><br>
+    [4] Dubot B., Deniau M., Ramiandrisoa D., Minonzio J.-G.
+      <i>Cortical Bone Assessment Using Ultrasonic Guided Waves: A Reproducibility Study in a Healthy Population.</i>
+      Journal of Visualized Experiments, 2025.
+      DOI: <a href="https://doi.org/10.3791/66985" target="_blank">10.3791/66985</a><br>
+    [5] Minonzio J.-G., Ramiandrisoa D., Fernandez S., Chappard C., Cohen-Solal M.
+      <i>Cortical bone parameters measured at the one-third distal radius using BDAT and HR-pQCT.</i>
+      Ultrasonics, 2025.
+      DOI: <a href="https://doi.org/10.1016/j.ultras.2025.107829" target="_blank">10.1016/j.ultras.2025.107829</a> —
+      Data available at : <a href="https://osf.io/ehqrb" target="_blank">https://osf.io/ehqrb</a>
+    </p>
+
+        <!--          
+                <div class="study">
+                <h4>Location : Lariboisiere, France</h4>
+                    <p><strong>Population:</strong> 14 radius.<br>
+                    <strong>Methods:</strong> BDAT (1 MHz) vs HR-pQCT.<br>
+                    <strong>Main findings:</strong> Ct.Th<small>BDAT</small>/Ct.Th<small>pQCT</small> : R² = 0.70.<br>
+                    <em><small>Ref : Vallet, Q., Bochud, N., Chappard, C., Laugier, P., Minonzio, J. G. In vivo characterization of cortical bone using guided waves measured by axial transmission. IEEE Trans Ultrason Ferroelectr Freq Control. 63 (9), 1361-1371 (2016). </em>
+                    <em>DOI :<a href="https://doi.org/10.1109/TUFFC.2016.2587079"> 10.1109/TUFFC.2016.2587079</small></a></em></p>
+                </div>
+                <div class="study">
+                <h4>Location : ? </h4>
+                    <p><strong>Population:</strong> 66 radius (18-87).<br>
+                    <strong>Methods:</strong> BDAT (1 MHz) vs HR-pQCT.<br>
+                    <strong>Main findings:</strong> Ct.Th (R² = 0.89, RMSE = 0.2 mm); Ct.Po vs Ct.vBMD (R² = 0.57, RMSE = 3%).<br>
+                    <em><small>Ref : J-G Minonzio, D Ramiandrisoa, S Fernandez, C Chappard, M Cohen-Solal.Cortical bone parameters measured at the one-third distal radius obtained with axial transmission and HR-pQCT compared with anthropometric data in a representative population,Ultrasonics,2025,. </em><br>
+                    <em>DOI :<a href="https://doi.org/10.1016/j.ultras.2025.107829"> 10.1016/j.ultras.2025.107829</small></a></em></p>
+                </div>
+                <div class="study">
+                    <h4>Location : Germany</h4>
+                    <p><strong>Population:</strong> 15 tibia.<br>
+                    <strong>Methods:</strong> BDAT (0.5 MHz) vs HR-pQCT.<br>
+                    <strong>Main findings:</strong> Ct.Th R² = 0.62; BDAT vs pQCT parameters (R² = 0.28-0.57).<br>
+                    <em><small>Ref : Schneider, J., Ramiandrisoa,D., Armbrecht,G., Ritter,.J, Felsenberg,D., Raum.K, Minonzio,J.G, In vivo measurements of cortical thickness and porosity at the proximal third of the tibia using guided waves: Comparison with site-matched peripheral quantitative computed tomography and distal high-resolution peripheral quantitative computed tomography. Ultrasound Med Biol. 45 (5), 1234-1242 (2019). </em><br>
+                    <em>DOI :<a href="https://doi.org/10.1016/j.ultrasmedbio.2019.01.008"> 10.1016/j.ultrasmedbio.2019.01.008</small></a></em></p>
+                </div>
+                <div class="study">
+                    <h4>Location : ? </h4>
+                    <p><strong>Population:</strong> 19 radius and tibia.<br>
+                    <strong>Methods:</strong> BDAT vs and mechanical test (Instron 5565, Instron Ltd, High Wycombe, UK).<br>
+                    <strong>Main findings:</strong>?? BDAT showed predictive value for femoral neck mechanical properties.<br>
+                    <em><small>Ref : Behforootan, S., et al. Can guided wave ultrasound predict bone mechanical properties at the femoral neck in patients undergoing hip arthroplasty. J Mech Behav Biomed Mater. 136, 105468(2022). </em><br>
+                    <em>DOI :<a href="https://doi.org/10.1016/j.jmbbm.2022.105468"> 10.1016/j.jmbbm.2022.105468</small></a></em></p>
+
+                </div>
+                
+                <div class="study">
+                    <h4>Location : ? </h4>
+                    <p><strong>Population:</strong> 14 radius.<br>
+                    <strong>Methods:</strong> BDAT vs and mechanical test (Instron 5565, Instron Ltd, High Wycombe, UK).<br>
+                    <strong>Main findings:</strong>?? BDAT showed predictive value for femoral neck mechanical properties.<br>
+                    <em><small>Ref : Behforootan, S., et al. Can guided wave ultrasound predict bone mechanical properties at the femoral neck in patients undergoing hip arthroplasty. J Mech Behav Biomed Mater. 136, 105468(2022). </em><br>
+                    <em>DOI :<a href="https://doi.org/10.1016/j.jmbbm.2022.105468"> 10.1016/j.jmbbm.2022.105468</small></a></em></p>
+                
+                </div>
+                </div>
+            </div>-->
+            </div>
+        </section>
+                <section id="methods" class="card">
+            <h2>Methods</h2>
+        <!-- <p>Workflow includes: guided acquisition, time-frequency analysis (to form the Guided Wave Spectrum Image, GWSI), parameter extraction (vFAS, vA0), and an inverse model to estimate Ct.Th and Ct.Po. Machine learning approaches (SVM/CNN) have also been explored for feature extraction and classification.</p>-->
+            <div class="accordion">
+            <div class="acc-item">
+                <button class="acc-button" data-target="m1">Signal Processing</button>
+                <div id="m1" class="acc-panel">
+    <img src="C:\Users\Jean-Gabriel\Documents\biblio\Liste publi PDF\signalprocessing.png">
+    <!--<table style="width:100%; border-collapse:collapse; font-size:14px;">
+    <thead style="background:#eef5ff;">
+        <tr>
+        <th style="border:1px solid #ccc; padding:8px; width:20%;">Ref / Author (Year)</th>
+        <th style="border:1px solid #ccc; padding:8px; width:25%;">Topic</th>
+        <th style="border:1px solid #ccc; padding:8px; width:55%;">Main Concept </th>
+        </tr>
+    </thead>
+    <tbody>
+         SVD-based and Signal Extraction Methods
+  
+        <tr>
+        <td style="border:1px solid #ccc; padding:8px;">[1] Minonzio (2010)</td>
+        <td style="border:1px solid #ccc; padding:8px;" rowspan="5">Wavenumber extraction</td>
+        <td style="border:1px solid #ccc; padding:8px;">
+            	SVD-based method
+        </td>
+        </tr>
+        <tr>
+        <td style="border:1px solid #ccc; padding:8px;">[2] Xu (2016a)</td>
+        <td style="border:1px solid #ccc; padding:8px;">
+            Multichannel processing
+        </td>
+        </tr>
+        <tr>
+        <td style="border:1px solid #ccc; padding:8px;">[3] Xu (2016b)</td>
+        <td style="border:1px solid #ccc; padding:8px;">Sparse inverse SVD</td>
+        </tr>
+        <tr>
+        <td style="border:1px solid #ccc; padding:8px;">[4] Xu (2018)</td>
+         <td style="border:1px solid #ccc; padding:8px;">Dispersive Radon transform</td>
+        </tr>
+        <tr>
+        <td style="border:1px solid #ccc; padding:8px;">[5] Bai (2016)</td>
+         <td style="border:1px solid #ccc; padding:8px;">Wideband mode-selective excitation</td>
+        </tr>
+        <tr>
+        <td style="border:1px solid #ccc; padding:8px;">[6] Bossy (2004)</td>
+         <td style="border:1px solid #ccc; padding:8px;" rowspan="4">
+            Impact of soft tissue
+        </td>
+        <td style="border:1px solid #ccc; padding:8px;">Bidirectional correction</td>
+        </tr>
+        <tr>
+        <td style="border:1px solid #ccc; padding:8px;">[7] Moreau (2014a)</td>
+        <td style="border:1px solid #ccc; padding:8px;">Bidirectional correction</td>
+        </tr>
+
+        <tr>
+        <td style="border:1px solid #ccc; padding:8px;">[8] Chen (2012)</td>
+        <td style="border:1px solid #ccc; padding:8px;">Impact of Soft tissue</td>
+        
+        </tr>
+        <tr>
+        <td style="border:1px solid #ccc; padding:8px;">[9] Bochud (2017)</td>
+        <td style="border:1px solid #ccc; padding:8px;">Bilayer model</td>
+        </tr>
+        <tr>
+        <td style="border:1px solid #ccc; padding:8px;">[10] Minonzio (2011)</td>
+        <td style="border:1px solid #ccc; padding:8px;" rowspan="3">Deviation from the regular plate model</td>
+        <td style="border:1px solid #ccc; padding:8px;">Impact of Attenuation</td>
+        </tr>
+
+        <tr>
+        <td style="border:1px solid #ccc; padding:8px;">[11] Moreau (2014b)</td>
+        <td style="border:1px solid #ccc; padding:8px;">
+            Irregular thickness
+        </td>
+        </tr>
+        <tr>
+        <td style="border:1px solid #ccc; padding:8px;">[12] Minonzio (2015)</td>
+        <td style="border:1px solid #ccc; padding:8px;">Impact of Curvature</td>
+        </tr>
+
+       
+        
+    </tbody>
+    </table> -->
+
+    <p style="font-size:13px; color:#555; margin-top:10px;">
+    <b>References:</b><br>
+    [1] Minonzio J.-G., Talmant M., Laugier P.
+      <i>Guided wave phase velocity measurement using multi-emitter and multi-receiver arrays in the axial transmission configuration.</i>
+      Journal of the Acoustical Society of America, 2010.
+      DOI: <a href="https://doi.org/10.1121/1.3377085" target="_blank">10.1121/1.3377085</a><br>
+    [2] Xu K., Ta D., Cassereau D., Hu B., Wang W., Laugier P., Minonzio J.-G.
+      <i>Multichannel processing for dispersion curves extraction of ultrasonic axial-transmission signals.</i>
+      Journal of the Acoustical Society of America, 2016.
+      DOI: <a href="https://doi.org/10.1121/1.4962491" target="_blank">10.1121/1.4962491</a><br>
+    [3]  Xu K., Minonzio J.-G., Ta D., Hu B., Wang W., Laugier P.
+          <i>Sparse inverse SVD method for high-resolution extraction of the dispersion curves of ultrasonic guided waves.</i>
+          IEEE Transactions on Ultrasonics, Ferroelectrics, and Frequency Control, 2016.
+          DOI: <a href="https://doi.org/10.1109/TUFFC.2016.2592688" target="_blank">10.1109/TUFFC.2016.2592688</a><br>
+    [4]  Xu K., Laugier P., Minonzio J.-G.
+          <i>Dispersive Radon transform.</i>
+          Journal of the Acoustical Society of America, 2018.
+          DOI: <a href="https://doi.org/10.1121/1.5036726" target="_blank">10.1121/1.5036726</a><br>
+    [5] Bai L., Xu K., Bochud N., Ta D., Hu B., Laugier P., Minonzio J.-G.
+          <i>Multichannel wideband mode-selective excitation of ultrasonic guided waves in long cortical bone.</i>
+          Proceedings of the IEEE International Ultrasonics Symposium (IUS), 2016.
+          DOI: <a href="https://doi.org/10.1109/ULTSYM.2016.7728774" target="_blank">10.1109/ULTSYM.2016.7728774</a><br>  
+    [6] Bossy E., Talmant M., Defontaine M., Patat F., Laugier P.
+          <i>Bidirectional axial transmission can improve accuracy and precision of ultrasonic velocity measurement in cortical bone: a validation on test materials.</i>
+          IEEE Transactions on Ultrasonics, Ferroelectrics, and Frequency Control, 2004.
+          DOI: <a href="https://doi.org/10.1109/TUFFC.2004.1268469" target="_blank">10.1109/TUFFC.2004.1268469</a><br>
+    [7]  Moreau L., Minonzio J.-G., Foiret J., Bossy E., Talmant M., Laugier P.
+          <i>Accurate measurement of guided modes in a plate using a bidirectional approach.</i>
+          Journal of the Acoustical Society of America, 2014.
+          DOI: <a href="https://doi.org/10.1121/1.4832335" target="_blank">10.1121/1.4832335</a><br>
+    [8] Chen J., Foiret J., Minonzio J.-G., Talmant M., Su Z., Cheng L., Laugier P.
+          <i>Measurement of guided mode wavenumbers in soft tissue–bone mimicking phantoms using ultrasonic axial transmission.</i>
+          Physics in Medicine and Biology, 2012.
+          DOI: <a href="https://doi.org/10.1088/0031-9155/57/10/3025" target="_blank">10.1088/0031-9155/57/10/3025</a><br>
+    [9]  Bochud N., Vallet Q., Minonzio J.-G., Laugier P.
+          <i>Predicting bone strength with ultrasonic guided waves.</i>
+          Scientific Reports, 2017.
+          DOI: <a href="https://doi.org/10.1038/srep43628" target="_blank">10.1038/srep43628</a><br>
+    [10] Minonzio J.-G., Foiret J., Talmant M., Laugier P.
+          <i>Impact of attenuation on guided mode wavenumber measurement in axial transmission on bone-mimicking plates.</i>
+          Journal of the Acoustical Society of America, 2011.
+          DOI: <a href="https://doi.org/10.1121/1.3652884" target="_blank">10.1121/1.3652884</a><br>
+    [11]  Moreau L., Minonzio J.-G., Talmant M., Laugier P.
+          <i>Measuring the wavenumber of guided modes in waveguides with linearly varying thickness.</i>
+          Journal of the Acoustical Society of America, 2014.
+          DOI: <a href="https://doi.org/10.1121/1.4869691" target="_blank">10.1121/1.4869691</a><br>
+    [12]  Minonzio J.-G., Foiret J., Moilanen P., Pirhonen J., Zhao Z., Talmant M., Timonen J., Laugier P.
+          <i>A free plate model can predict guided modes propagating in tubular bone-mimicking phantoms.</i>
+          Journal of the Acoustical Society of America, 2015.
+          DOI: <a href="https://doi.org/10.1121/1.4903920" target="_blank">10.1121/1.4903920</a><br>
+    </p>
+
+
+    <!--
+                    <strong>Principle of the SVD-based method, guided wave spectrum image Norm (f,k)</strong><br>
+                    <small><em>Ref: J.-G. Minonzio, M. Talmant, P. Laugier, Guided wave phase velocity measurement using multi-emitter and multi-receiver arrays in the axial transmission configuration, Journal of the Acoustical Society of America 127 (5) (2010) 2913–2919. Doi:<a href="https://doi.org/10.1121/1.3377085"> 10.1121/1.3377085</a>.
+                    </em></small><br><br>
+                    <strong>Impact of curvature</strong><br>
+                    <small><em>Ref: Minonzio, J.-G., Foiret, J., Moilanen, P., Pirhonen, J., Zhao, Z., Talmant, M., Timonen, J., & Laugier, P. A free plate model can predict guided modes propagating in tubular bone-mimicking phantoms. J. Acoust. Soc. Am. 137(1), EL98–EL104 (2015). Doi:<a href="https://doi.org/10.1121/1.4903920"> 10.1121/1.4903920</a>.</em></small><br><br>
+                    <small><em>Ref: N. Bochud, Q. Vallet, J.-G. Minonzio, P. Laugier, Predicting bone strength with ultrasonic guided waves, Scientific Reports 7 (1) (2017) 43628. Doi:<a href="https://doi.org/10.1038/srep43628">10.1038/srep43628</a>.</em></small><br><br>
+                    <strong>Impact of attenuation</strong><br>
+                    <small><em>Ref: Minonzio JG, Foiret J, Talmant M, Laugier P. Impact of attenuation on guided mode wavenumber measurement in axial transmission on bone mimicking plates. J Acoust Soc Am. 2011 Dec;130(6):3574-82. Doi:<a href="https://doi.org/10.1121/1.3652884"> 10.1121/1.3652884.</a></em></small><br><br>
+                    <strong>Impact of irregular thickness </strong><br>
+                    <small><em>Ref: L. Moreau, J.-G. Minonzio, M. Talmant, P. Laugier, Measuring the wavenumber of guided modes in a thickness-varying waveguide, Journal of the Acoustical Society of America 135 (5) (2014) 2614–2625. Doi:<a href="https://doi.org/10.1121/1.4869691"> 10.1121/1.4869691.</a></em></small><br><br>
+                    <strong>Impact of soft tissue</strong><br>
+                    <small><em>Ref: J. Chen, J. Foiret, J.-G. Minonzio, M. Talmant, Z. Su, L. Cheng, P. Laugier, Measurement of guided mode wavenumbers in soft tissue-bone mimicking phantoms using ultrasonic axial transmission, Physics in Medicine and Bi-ology 57 (10) (2012) 3025–3037. Doi:<a href="https://doi.org/10.1088/0031-9155/57/10/3025"> 10.1088/0031-9155/57/10/3025</a>.</em></small><br><br>
+                    <small><em>Ref: N. Bochud, Q. Vallet, J.-G. Minonzio, P. Laugier, Predicting bone strength with ultrasonic guided waves, Scientific Reports 7 (1) (2017) 43628. Doi: <a href="https://doi.org/10.1038/srep43628"> 10.1038/srep43628</a>.</em></small><br><br>
+                    <strong>Bidirectional correction</strong><br>
+                    <small><em>Ref : E. Bossy, M. Talmant, M. Defontaine, F. Patat and P. Laugier, "Bidirectional axial transmission can improve accuracy and precision of ultrasonic velocity measurement in cortical bone: a validation on test materials," in IEEE Transactions on Ultrasonics, Ferroelectrics, and Frequency Control, vol. 51, no. 1, pp. 71-79, Jan. 2004. Doi:<a href="https://doi.org/10.1109/TUFFC.2004.1268469"> 10.1109/TUFFC.2004.1268469.</a></em></small><br><br>
+                    <small><em>Ref : L. Moreau, J.-G. Minonzio, J. Foiret, E. Bossy, M. Talmant, P. Laugier, Accurate measurement of guided modes in a plate using a bidirectional approach, Journal of the Acoustical Society of America 135 (1) (2014) EL15–EL21. Doi:<a href="https://doi.org/10.1121/1.4832335">10.1121/1.4832335.</a></em></small><br><br>
+                    <strong> Multichannel processing</strong>
+                    <small><em>Ref: K. Xu, D. Ta, D. Cassereau, B. Hu, W. Wang, P. Laugier, J.-G. Minonzio, Multichannel processing for dispersion curves extraction of ultrasonic axialtransmission signals: Comparisons and case studies, Journal of the Acoustical Society of America 140 (3) (2016) 1758-1770. Doi: <a href="https://doi.org/10.1121/1.4962491">10.1121/1.4962491</a>.</em></small><br><br>
+                    <strong>Sparse inverse svd method</strong>
+                    <small><em>Ref: K. Xu, J.-G. Minonzio, D. Ta, B. Hu, W. Wang, P. Laugier, Sparse inverse svd method for high resolution extraction of the dispersion curves of ultrasonic guided waves, IEEE Transactions on Ultrasonics, Ferroelectrics, and Frequency Control 63 (10) (2016) 1514-1524. Doi: <a href="https://doi.org/10.1109/TUFFC.2016.2592688">10.1109/TUFFC.2016.2592688</a>.</em></small><br><br>
+                -->
+                </div>
+            </div>
+            <div class="acc-item">
+                <button class="acc-button" data-target="m2">WaveGuide Model & Inverse problem</button>
+                <div id="m2" class="acc-panel">
+    <img src="C:\Users\Jean-Gabriel\Documents\biblio\Liste publi PDF\waweguid.png">
+    <!--<table style="width:100%; border-collapse: collapse; font-size:14px;">
+    <thead style="background:#eef5ff;">
+        <tr>
+        <th style="border:1px solid #ccc; padding:8px;">Ref / Author (Year)</th>
+        <th style="border:1px solid #ccc; padding:8px;">Method / Model</th>
+        <th style="border:1px solid #ccc; padding:8px;">Parameters</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+        <td style="border:1px solid #ccc; padding:8px;">[1] Talmant (2010)</td>
+        <td style="border:1px solid #ccc; padding:8px;">Waveguide models</td>
+        <td style="border:1px solid #ccc; padding:8px;">free plate, free tube, 2D transverse free plate</td>
+        </tr>
+        <tr>
+        <td style="border:1px solid #ccc; padding:8px;">[2] Granke (2011)</td>
+        <td style="border:1px solid #ccc; padding:8px;">Elasticity-porosity model</td>
+        <td style="border:1px solid #ccc; padding:8px;">4 elastic parameters <em>vs</em> Ct.Po</td>
+        </tr>
+        <tr>
+        <td style="border:1px solid #ccc; padding:8px;">[3] Foiret (2014)</td>
+        <td style="border:1px solid #ccc; padding:8px;">2D transverse isotropic free plate model — Gradient method</td>
+        <td style="border:1px solid #ccc; padding:8px;">Ct.Th + 4 elastic parameters</td>
+        </tr>
+        <tr>
+        <td style="border:1px solid #ccc; padding:8px;">[4] Bochud (2015)</td>
+        <td style="border:1px solid #ccc; padding:8px;">Bilayer model</td>
+        <td style="border:1px solid #ccc; padding:8px;">Ct.Th + 4 elastic parameters + density + 3 fluid parameters</td>
+        </tr>
+        <tr>
+        <td style="border:1px solid #ccc; padding:8px;" rowspan="2">[5] Bochud (2016)</td>
+        <td style="border:1px solid #ccc; padding:8px;" rowspan="2">2D transverse isotropic free plate model — Genetic algorithm</td>
+        <td style="border:1px solid #ccc; padding:8px;">Ct.Th + 4 elastic parameters</td>
+        </tr>
+        <tr>
+        <td style="border:1px solid #ccc; padding:8px;">Ct.Th + Ct.Po</td>
+        </tr>
+      
+        <tr>
+        <td style="border:1px solid #ccc; padding:8px;">[6] Minonzio (2018)</td>
+        <td style="border:1px solid #ccc; padding:8px;">2D transverse isotropic free plate model — generalized SVD-based method</td>
+        <td style="border:1px solid #ccc; padding:8px;">Ct.Th + Ct.Po</td>
+        </tr>
+        <tr>
+        <td style="border:1px solid #ccc; padding:8px;">[7] Araya (2021)</td>
+        <td style="border:1px solid #ccc; padding:8px;">2D transverse isotropic free plate model — Sparse generalized SVD-based method (real time calculation)</td>
+        <td style="border:1px solid #ccc; padding:8px;">Ct.Th + Ct.Po</td>
+        </tr>
+        <tr>
+        <td style="border:1px solid #ccc; padding:8px;">[8] Arostica (2022)</td>
+        <td style="border:1px solid #ccc; padding:8px;">Elasticity-porosity model with attenuation</td>
+        <td style="border:1px solid #ccc; padding:8px;"><p> 4 elastic parameters <em>vs</em> Ct.Po +
+  &tau;<sup>matrix</sup>, &tau;<sup>fluid</sup> with
+  Q<sup>&minus;1</sup> = &omega;&tau;
+</p> </td>
+        </tr>
+
+        
+    </tbody>
+    </table> -->
+
+
+    <p style="font-size:13px; color:#555; margin-top:10px;">
+    <b>References:</b><br>
+
+    [1]  Talmant M., Foiret J., Minonzio J.-G.
+          <i>Guided Waves in Cortical Bone.</i>
+          Bone Quantitative Ultrasound (book chapter), 2011.
+          DOI: <a href="https://doi.org/10.1007/978-94-007-0017-8_7" target="_blank">10.1007/978-94-007-0017-8_7</a><br>
+
+    [2] Granke M., Grimal Q., Saïed A., Nauleau P., Peyrin F., Laugier P.
+          <i>Change in porosity is the major determinant of the variation of cortical bone elasticity at the millimeter scale in aged women.</i>
+          Bone, 2011.
+          DOI: <a href="https://doi.org/10.1016/j.bone.2011.08.002" target="_blank">10.1016/j.bone.2011.08.002</a><br>
+
+    [3]  Foiret J., Minonzio J.-G., Chappard C., Talmant M., Laugier P.
+          <i>Combined estimation of thickness and velocities using ultrasound guided waves: a pioneering study on in vitro cortical bone samples.</i>
+          IEEE Transactions on Ultrasonics, Ferroelectrics, and Frequency Control, 2014.
+          DOI: <a href="https://doi.org/10.1109/TUFFC.2014.3062" target="_blank">10.1109/TUFFC.2014.3062</a><br>
+    
+    [4] Bochud N., Vallet Q., Bala Y., Follet H., Minonzio J.-G., Laugier P.
+          <i>Genetic algorithms-based inversion of multimode guided waves for cortical bone characterization.</i>
+          Physics in Medicine and Biology, 2016.
+          DOI: <a href="https://doi.org/10.1088/0031-9155/61/19/6953" target="_blank">10.1088/0031-9155/61/19/6953</a><br>
+
+    [5] Bochud N., Vallet Q., Minonzio J.-G., Laugier P. <i>Predicting bone strength with ultrasonic guided waves.</i> Ultrasound Med. Biol. 2017. DOI: <a href="https://doi.org/ 10.1038/srep43628" target="_blank">10.1038/srep43628</a><br>
+
+    [6] Minonzio J.-G., Bochud N., Vallet Q., Bala Y., Ramiandrisoa D., Follet H., Mitton D., Laugier P.
+          <i>Bone cortical thickness and porosity assessment using ultrasound guided waves: an ex vivo validation study.</i>
+          Bone, 2018.
+          DOI: <a href="https://doi.org/10.1016/j.bone.2018.07.018" target="_blank">10.1016/j.bone.2018.07.018</a><br>
+
+    [7] Araya C., Martinez A., Ramiandrisoa D., Ta D., Xu K., Osses A., Minonzio J.-G.
+          <i>Real-time waveguide parameter estimation using axial transmission SVD-based method and sparse dispersive Radon transform.</i>
+          Proceedings of the IEEE Latin America Ultrasonics Symposium (LAUS), 2021.
+          DOI: <a href="https://doi.org/10.1109/LAUS53676.2021.9639171" target="_blank">10.1109/LAUS53676.2021.9639171</a><br>
+
+    [8] Aróstica R., Aguilera A., Osses A., Minonzio J.-G.
+          <i>A simplified homogenization model applied to viscoelastic cortical bone at ultrasonic frequencies.</i>
+          Journal of Biomechanics, 2022.
+          DOI: <a href="https://doi.org/10.1016/j.jbiomech.2021.110868" target="_blank">10.1016/j.jbiomech.2021.110868</a>
+    </p>
+
+
+
+
+
+            
+                    <!--<small><em> Ref: J.-G. Minonzio, M. Talmant, P. Laugier, Guided wave phase velocity measurement using multi-emitter and multi-receiver arrays in the axial transmission configuration, Journal of the Acoustical Society of America 127 (5)(2010) 2913–2919. Doi:<a href="https://doi.org/10.1121/1.3377085"> 10.1121/1.3377085</a>.</em></small><br><br>
+                    <strong>Principle of 2D transverse isotropic free plate model</strong><br>
+                    <small><em> Ref: Foiret J, Minonzio JG, Chappard C, Talmant M, Laugier P. Combined estimation of thickness and velocities using ultrasound guided waves: a pioneering study on in vitro cortical bone samples. IEEE Trans Ultrason Ferroelectr Freq Control. 2014 Sep;61(9):1478-88. Doi:<a href="https://doi.org/10.1109/TUFFC.2014.3062"> 10.1109/TUFFC.2014.3062</a>.</em></small><br><br>
+                    <strong>Elasticity parametrized by porosity</strong><br>
+                    <small><em> Ref: Granke M, Grimal Q, Saïed A, Nauleau P, Peyrin F, Laugier P. Change in porosity is the major determinant of the variation of cortical bone elasticity at the millimeter scale in aged women. Bone. 2011 Nov;49(5):1020-6. Doi:<a href="https://doi.org/10.1016/j.bone.2011.08.002"> 10.1016/j.bone.2011.08.002</a>.</em></small><br><br>
+                    <small><em> Ref: N. Bochud, Q. Vallet, Y. Bala, H. Follet, J.-G. Minonzio, P. Laugier, Genetic algorithms-based inversion of multimode guided waves for cortical bone characterization, Physics in Medicine and Biology 61 (19) (2016) 6953–6974. Doi:<a href="https://doi.org/10.1088/0031-9155/61/19/6953"> 10.1088/0031-9155/61/19/6953</a>.</em></small><br><br>
+                    <small><em> Ref: N. Bochud, Q. Vallet, J.-G. Minonzio, P. Laugier, Predicting bone strength with ultrasonic guided waves, Scientific Reports 7 (1) (2017) 43628. Doi:<a href="https://doi.org/10.1038/srep43628"> 10.1038/srep43628</a>.</em></small><br><br>
+
+    <table style="width:100%; border-collapse: collapse; font-size:14px;">
+    <thead style="background:#eef5ff;">
+        <tr>
+        <th style="border:1px solid #ccc; padding:8px;">Method / Model</th>
+        <th style="border:1px solid #ccc; padding:8px;">Parameters</th>
+        <th style="border:1px solid #ccc; padding:8px;">Ref / Author (Year)</th>
+        </tr>
+    </thead>
+    <tbody>
+        Elasticity Porosity
+        <tr>
+        <td style="border:1px solid #ccc; padding:8px;" rowspan="1">Elasticity–porosity model</td>
+        <td style="border:1px solid #ccc; padding:8px;"></td>
+        <td style="border:1px solid #ccc; padding:8px;">[1] Granke (2011)</td>
+        </tr>
+
+        2D transverse isotropic free plate — Group 1
+        <tr>
+        <td style="border:1px solid #ccc; padding:8px;" rowspan="5">
+            2D transverse isotropic free plate<br>
+        </td>
+        <td style="border:1px solid #ccc; padding:8px;">Ct.Th + 4 elastic parameters</td>
+        <td style="border:1px solid #ccc; padding:8px;">[2] Foiret (2014)</td>
+        </tr>
+        <tr>
+        <td style="border:1px solid #ccc; padding:8px;">Ct.Th + 4 elastic parameters</td>
+        <td style="border:1px solid #ccc; padding:8px;">[3] Bochud (2016a)</td>
+        </tr>
+
+    
+        <tr>
+        <td style="border:1px solid #ccc; padding:8px;">Ct.Th + Ct.Po</td>
+        <td style="border:1px solid #ccc; padding:8px;">[4] Bochud (2016b)</td>
+        </tr>
+        <tr>
+        <td style="border:1px solid #ccc; padding:8px;">Ct.Th + Ct.Po</td>
+        <td style="border:1px solid #ccc; padding:8px;">[5] Minonzio (2018)</td>
+        </tr>
+        <tr>
+        <td style="border:1px solid #ccc; padding:8px;">Ct.Th + Ct.Po</td>
+        <td style="border:1px solid #ccc; padding:8px;">[6] Araya (2021)</td>
+        </tr>
+
+        Bilayer model
+        <tr>
+        <td style="border:1px solid #ccc; padding:8px;" rowspan="1">Bilayer model</td>
+        <td style="border:1px solid #ccc; padding:8px;">Ct.Th + 4 elastic parameters + density + 3 fluid parameters</td>
+        <td style="border:1px solid #ccc; padding:8px;">[7] Bochud (2017)</td>
+        </tr>
+    </tbody>
+    </table>
+
+    <p style="font-size:13px; color:#555; margin-top:10px;">
+    <b>References:</b><br>
+    [1] Granke M. et al., <i>Elasticity–porosity relationship in cortical bone tissue.</i> (2011).<br>
+    [2] Foiret D. et al., <i>Gradient-based inversion method applied to cortical bone guided waves.</i> (2014). DOI:
+    <a href="https://doi.org/10.1016/j.ultrasmedbio.2014.01.025" target="_blank">10.1016/j.ultrasmedbio.2014.01.025</a><br>
+    [3] Bochud N. et al., <i>Genetic algorithm inversion for guided waves in cortical bone: 2D transverse isotropic model.</i> (2016). DOI:
+    <a href="https://doi.org/10.1016/j.ultrasmedbio.2016.04.013" target="_blank">10.1016/j.ultrasmedbio.2016.04.013</a><br>
+    [4] Bochud N. et al., <i>Genetic algorithm for simultaneous retrieval of cortical thickness and porosity.</i> (2016). DOI:
+    <a href="https://doi.org/10.1016/j.ultrasmedbio.2016.04.017" target="_blank">10.1016/j.ultrasmedbio.2016.04.017</a><br>
+    [5] Minonzio J-G. et al., <i>SVD-based inverse problem for cortical bone guided waves.</i> (2018). DOI:
+    <a href="https://doi.org/10.1016/j.ultrasmedbio.2018.03.010" target="_blank">10.1016/j.ultrasmedbio.2018.03.010</a><br>
+    [6] Araya R. et al., <i>Sparse SVD-based inversion method for guided waves in cortical bone.</i> (2021). DOI:
+    <a href="https://doi.org/10.1016/j.ultrasmedbio.2021.04.003" target="_blank">10.1016/j.ultrasmedbio.2021.04.003</a><br>
+    [7] Bochud N. et al., <i>Bilayer model inversion: cortical bone and marrow with fluid coupling.</i> (2017). DOI:
+    <a href="https://doi.org/10.1016/j.ultrasmedbio.2017.05.009" target="_blank">10.1016/j.ultrasmedbio.2017.05.009</a>
+    </p>
+    -->
+    </div>
+            </div>
+            <!-- <div class="acc-item">
+                <button class="acc-button" data-target="m3">Inverse Problem</button>
+                <div id="m3" class="acc-panel">
+                <strong>Principle of 2D transverse isotropic free plate model</strong><br>
+                <small><em>Ref: J. Foiret, J.-G. Minonzio, C. Chappard, M. Talmant, P. Laugier, Combined estimation of thickness and velocities using ultrasound guided waves: a feasibility study on in vitro cortical bone samples, IEEE Transactions on Ultrasonics, Ferroelectrics, and Frequency Control 61 (9) (2014) 1478–1483. doi:10.1109/TUFFC.2014.3062.</em></small><br><br>
+                <strong>Model 2D th porosity</strong><br>
+                <small><em>Ref: N. Bochud, Q. Vallet, Y. Bala, H. Follet, J.-G. Minonzio, P. Laugier, Genetic algorithms-based inversion of multimode guided waves for cortical bone characterization, <i>Physics in Medicine and Biology</i> 61 (19) (2016) 6953–6974. <br>Doi: <a href="https://doi.org/10.1088/0031-9155/61/19/6953" target="_blank">10.1088/0031-9155/61/19/6953</a>.</em></small><br><br>
+                <small><em>Ref: C. Araya, A. Martinez, D. Ramiandrisoa, D. Ta, K. Xu, A. Osses, J.-G. Minonzio, Real time waveguide parameter estimation using axial transmission SVD-based method and sparse disperse radon transform, in: <i>2021 First IEEE Latin America Ultrasonics Symposium</i>, 2021.<br>  Doi: <a href="https://doi.org/10.1109/LAUS53676.2021.9639171" target="_blank">10.1109/LAUS53676.2021.9639171</a>.</em></small><br><br>
+                <small><em>Ref: J.-G. Minonzio, N. Bochud, Q. Vallet, Y. Bala, D. Ramiandrisoa, H. Follet, D. Mitton, P. Laugier, Bone cortical thickness and porosity assessment using ultrasound guided waves: An ex vivo validation study, <i>Bone</i> 116 (2018) 111–119.<br>  Doi: <a href="https://doi.org/10.1016/j.bone.2018.07.018" target="_blank">10.1016/j.bone.2018.07.018</a>.</em></small><br><br>
+            .</div>-->
+             <div class="acc-item">
+                <button class="acc-button" data-target="m4">AI</button>
+                <div id="m4" class="acc-panel">
+    <img src="C:\Users\Jean-Gabriel\Documents\biblio\Liste publi PDF\ai.png">
+    <!--<table style="width:100%; border-collapse: collapse; font-size:14px;">
+    <thead style="background:#eef5ff;">
+        <tr>
+        <th style="border:1px solid #ccc; padding:8px;">Ref / Author (Year)</th>
+        <th style="border:1px solid #ccc; padding:8px;">Database</th>
+        <th style="border:1px solid #ccc; padding:8px;">Patients</th>
+        <th style="border:1px solid #ccc; padding:8px;">Method</th>
+        <th style="border:1px solid #ccc; padding:8px;">Input Data / Features</th>
+        <th style="border:1px solid #ccc; padding:8px;">Bdat</th>
+        <th style="border:1px solid #ccc; padding:8px;">DXA (Age, BMI, Cortisone)</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+        <td style="border:1px solid #ccc; padding:8px;">[1] Minonzio (2020)</td>
+        <td style="border:1px solid #ccc; padding:8px;">Cochin</td>
+        <td style="border:1px solid #ccc; padding:8px;">201</td>
+        <td style="border:1px solid #ccc; padding:8px;">Logistic regression RO13, age, BMI, cortisone intake</td>
+        <td style="border:1px solid #ccc; padding:8px;">automatic features + age, BMI, cortisone </td>
+        <td style="border:1px solid #ccc; padding:8px;">AUC = 0.71 [0.69-0.74]</td>
+        <td style="border:1px solid #ccc; padding:8px;">AUC = 0,72 [0.64-0.78]</td>
+        </tr>
+        <tr>
+        <td style="border:1px solid #ccc; padding:8px;">[2] Miranda (2022)</td>
+        <td style="border:1px solid #ccc; padding:8px;">Cochin</td>
+        <td style="border:1px solid #ccc; padding:8px;">195</td>
+        <td style="border:1px solid #ccc; padding:8px;">SVM, LR, XGBC | RFE, XGBI, ANOVA</td>
+        <td style="border:1px solid #ccc; padding:8px;">Automatic features + Ct.Th, Ct.Po .... + age, BMI ...</td>
+        <td style="border:1px solid #ccc; padding:8px;">Acc = 0.71 [0.66-0.77]</td>
+        <td style="border:1px solid #ccc; padding:8px;">AUC = 0.71 [0.61-0.77]</td>
+        </tr>
+        
+        <tr>
+        <td style="border:1px solid #ccc; padding:8px;">[3] Flores (2024)</td>
+        <td style="border:1px solid #ccc; padding:8px;">Cochin</td>
+        <td style="border:1px solid #ccc; padding:8px;">239</td>
+        <td style="border:1px solid #ccc; padding:8px;">CNN BDAT-Net</td>
+        <td style="border:1px solid #ccc; padding:8px;">Spectrum image</td>
+        <td style="border:1px solid #ccc; padding:8px;">Acc = 0.66</td>
+        <td style="border:1px solid #ccc; padding:8px;">Acc = 0.65</td>
+        </tr>
+        <tr>
+        <td style="border:1px solid #ccc; padding:8px;">[4] Diaz (2024)</td>
+        <td style="border:1px solid #ccc; padding:8px;">Cochin</td>
+        <td style="border:1px solid #ccc; padding:8px;">195</td>
+        <td style="border:1px solid #ccc; padding:8px;">MCNN RawNet v1, age, BMI, cortisone intake, raw signals</td>
+        <td style="border:1px solid #ccc; padding:8px;">raw signals</td>
+        <td style="border:1px solid #ccc; padding:8px;">AUC = 0.85 [0.80-0.88]</td>
+        <td style="border:1px solid #ccc; padding:8px;">AUC = 0.71 [0.61-0.77]</td>
+        </tr>
+    </tbody>
+    </table> -->
+
+    <p style="font-size:13px; color:#555; margin-top:10px;">
+    <b>References:</b><br>
+[1] Minonzio J.-G., Cataldo B., Olivares R., Ramiandrisoa D., Soto R., Crawford B., de Albuquerque V. H. C., Muñoz R.
+          <i>Automatic Classifying of Patients With Non-Traumatic Fractures Based on Ultrasonic Guided Wave Spectrum Image Using a Dynamic Support Vector Machine.</i>
+          IEEE Access, 2020.
+          DOI: <a href="https://doi.org/10.1109/ACCESS.2020.3033480" target="_blank">10.1109/ACCESS.2020.3033480</a><br>
+
+[2]  Miranda D., Olivares R., Muñoz R., Minonzio J.-G.
+          <i>Improvement of Patient Classification Using Feature Selection Applied to Bidirectional Axial Transmission.</i>
+          IEEE Transactions on Ultrasonics, Ferroelectrics, and Frequency Control, 2022.
+          DOI: <a href="https://doi.org/10.1109/TUFFC.2022.3195477" target="_blank">10.1109/TUFFC.2022.3195477</a><br>
+
+[3]  Flores Cisternas W., Aguilera A. I., Olivares R., Muñoz R., Minonzio J.-G.
+          <i>CNN applied to ultrasonic guided wave spectrum image classification.</i>
+          Journal of Physics: Conference Series, 2024.
+          DOI: <a href="https://doi.org/10.1088/1742-6596/2822/1/012021" target="_blank">10.1088/1742-6596/2822/1/012021</a><br>
+
+[4] Díaz D., Flores W., Aguilera A. I., Olivares R., Muñoz R., Minonzio J.-G.
+          <i>Fragility Fracture Classification Using Axial Transmission Raw Signals and Multi-Channel Convolutional Neural Network.</i>
+          Proceedings of the IEEE Latin America Ultrasonics Symposium (LAUS), 2024.
+          DOI: <a href="https://doi.org/10.1109/LAUS60931.2024.10553065" target="_blank">10.1109/LAUS60931.2024.10553065</a>
+</p>
+
+
+ 
+                <!--  <strong>Principle of 2D transverse isotropic free plate model</strong><br>
+                <small><em>Ref: D. Miranda, R. Olivares, R. Muñoz, J.-G. Minonzio, Improvement of patient classification using feature selection applied to bi-directional axial transmission, IEEE Transactions on Ultrasonics, Ferroelectrics, and Frequency Control 69 (9) (2022) 2663-2671. <br>Doi: <a href="https://doi.org/10.1109/TUFFC.2022.3195477">10.1109/TUFFC.2022.3195477</a></em></small><br><br>
+                <strong>Model 2D th porosity</strong><br>
+                <small><em>Ref: J.-G. Minonzio, B. Cataldo, R. Olivares, D. Ramiandrisoa, R. Soto, B. Crawford, V. H. C. Albuquerque, R. Muñoz, Automatic classifying of patients with non-traumatic fractures based on ultrasonic guided wave spectrum image using a dynamic support vector machine, IEEE Access 8 (2020) 194752–194764.<br> Doi: <a href="https://doi.org/10.1109/ACCESS.2020.3033480">10.1109/ACCESS.2020.3033480</a>.</em></small><br><br>
+                <small><em>Ref: W. Flores, A. Aguilera, R. Olivares, R. Munoz, J.-G. Minonzio, Cnn applied ultrasonic guided wave spectrum image classification, Journal of Physics: Conference Series 2822 (1) (2024) 012021. <br>Doi: <a href="https://doi.org/10.1088/1742-6596/2822/1/012021">10.1088/1742-6596/2822/1/012021</a>.</em></small><br><br>
+                <small><em>Ref: W. Flores, D. Diaz, A. Aguilera, R. Olivares, R. Munoz, J.-G. Minonzio,Tailored convolutional neural network applied to fragility fracture classification using ultrasonic guided wave spectrum images, in: 2024 Second IEEE UFFC Latin America Ultrasonics Symposium (LAUS), Montevideo, Uruguay, 2024. <br>Doi: <a href="https://doi.org/10.1109/LAUS60931.2024.10553069">10.1109/LAUS60931.2024.10553069</a>.</em></small><br><br>
+                <small><em>Ref: D. Diaz, W. Flores, A. Aguilera, R. Olivares, R. Munoz, J.-G. Minonzio, Fragility fracture classification using axial transmission raw signals and multi-channel convolutional neural network, in: 2024 Second IEEE UFFC Latin America Ultrasonics Symposium (LAUS), Montevideo, Uruguay, 2024. <br>Doi: <a href="https://doi.org/10.1109/LAUS60931.2024.10553065">10.1109/LAUS60931.2024.10553065</a>.</em></small><br><br>-->
+            </div>
+            <div class="acc-item">
+                <button class="acc-button" data-target="m5">Others</button>
+                <div id="m5" class="acc-panel">
+
+                <strong> Point transducer</strong><br>
+                <small><em>Reference:  Kassou K., Remram Y., Laugier P., Minonzio J.-G.
+          <i>Dispersion characteristics of the flexural wave assessed using low-frequency (50 to 150 kHz) point-contact transducers: A feasibility study on bone-mimicking phantoms.</i><br>
+          Ultrasonics, 2017.
+          DOI: <a href="https://doi.org/10.1016/j.ultras.2017.05.008" target="_blank">10.1016/j.ultras.2017.05.008</a>
+        </em></small><br><br>
+
+                <strong> CMUT (capacitive micromachined ultrasonic transducer)</strong><br>
+                <small><em>Reference: Boulmé A., Ngo S., Minonzio J.-G., Legros M., Talmant M., Laugier P., Certon D.
+          <i>A capacitive micromachined ultrasonic transducer probe for assessment of cortical bone.</i>
+          IEEE Transactions on Ultrasonics, Ferroelectrics, and Frequency Control, 2014.
+          DOI: <a href="https://doi.org/10.1109/TUFFC.2014.2959" target="_blank">10.1109/TUFFC.2014.2959</a></em></small><br><br>
+
+                <strong> Pulse echo at 1/3 distal radius</strong><br>
+                <small><em>Reference :  Minonzio J.-G., Han C., Cassereau D., Grimal Q.
+          <i>In vivo pulse-echo measurement of apparent broadband attenuation and Q factor in cortical bone: a preliminary study.</i>
+          Physics in Medicine and Biology, 2021.
+          DOI: <a href="https://doi.org/10.1088/1361-6560/ac1022" target="_blank">10.1088/1361-6560/ac1022</a>
+</em></small>
+               
+
+                </div>
+            </div>
+            <div class="acc-item">
+                <button class="acc-button" data-target="m6">Patents</button>
+                <div id="m6" class="acc-panel">
+                <small><em> Minonzio J.-G., Talmant M., Laugier P., « Procédé et dispositif ultrasonores pour caractériser un milieu », FR2946753 (A1) / WO2010142927 (A1). <a href="https://patents.google.com/patent/WO2010142927A1/en" target="_blank">WO2010142927A1</a>.</em></small><br><br>
+                <small><em> Moreau L., Minonzio J.-G., Talmant M., Laugier P., « Procédé et dispositif ultrasonores pour représenter la propagation d'ondes ultrasonores dans un guide d'épaisseur linéairement variable », FR1357204 / WO2015010878 (A1). <a href="https://patents.google.com/patent/WO2015010878A1/en" target="_blank">WO2015010878A1</a>.</em></small><br><br>
+                <small><em> Minonzio J.-G., Xu K., Ta D., Bai L., « Method and device for characterizing a waveguide », EP17306027 / WO2019025510 (A1). <a href="https://patents.google.com/patent/WO2019025510A1/en" target="_blank">WO2019025510A1</a></em></small><br><br>
+                </div>
+            </div>
+            </div>
+        </section>
+
+
+        <section id="showcase" class="card">
+        <div class="acc-item">
+                <button class="acc-button" data-target="spectral-panel">  <h2>Spectral Images & Results</h2> </button>
+                <div id="spectral-panel" class="acc-panel">
+            
+           
+   <div class="two-columns">
+
+  
+    <div class="col">
+        <img src="C:\Users\Jean-Gabriel\Documents\biblio\Liste publi PDF\Captura de pantalla 2025-11-10 115550.png" alt="Ex vivo spectral image">
+        <p class="legend">
+            <strong>Ex vivo — Bone 2018</strong><br>
+            Left column: illustration of a typical objective function (Eq. (4)) for three acquisitions 
+            with intermediate repositioning on the radius specimen represented in Fig.<br>
+            Right column: comparison between experimental dispersion curves (dots) and 
+            the optimal predicted modes (continuous and dashed lines).  
+            Values correspond to the mean and standard deviation of the ten measurements (black dots).
+        </p>
+    </div>
+
+    
+    <div class="col">
+        <img src= "C:\Users\Jean-Gabriel\Documents\biblio\Liste publi PDF\Captura de pantalla 2025-11-10 131214.png" alt="In vivo spectral image">
+        <p class="legend">
+            <strong>In vivo — JoVE 2025</strong><br>
+            The figure shows 4 series for 1 participant and 1 operator: inverse problem images (left column) 
+            and experimental wavenumbers vs best fitting model (right column).<br>
+            Values correspond to the mean and standard deviation of the kept acquisitions over each 10-acquisition series.  
+            The number of kept acquisitions is shown in the title (e.g., 7/10).
+        </p>
+    </div>
+
+</div>
+
+
+            
+        </section>
+
+        <!--<section id="conclusion" class="card">
+            <h2>Conclusion & Key Points</h2>
+            <ul>
+            <li>BDAT is a portable, non-ionizing technique that provides structural and mechanical bone parameters useful for fragility screening.</li>
+            <li>Strong ex vivo validations and good in vivo agreement with HR-pQCT/pQCT support its measurement accuracy for Ct.Th and Ct.Po.</li>
+            <li>Clinical studies demonstrate BDAT's ability to discriminate fragility fractures across multiple cohorts and settings.</li>
+            </ul>
+        </section>-->
+
+        </div>
+
+        
+
+        <!--<div style="margin-top:14px">
+            <a class="btn" id="downloadBtn">Download (HTML)</a>
+        </div>
+
+        <div style="margin-top:14px;font-size:13px;color:var(--muted)">
+            <strong>Key references</strong>
+            <div class="ref"><a href="https://app.jove.com/t/66985/cortical-bone-assessment-using-ultrasonic-guided-waves" target="_blank">JoVE — Cortical Bone Assessment (protocol)</a></div>
+            <div class="ref"><a href="https://researchfeatures.com/bdat-robust-tool-examine-bone-fragility/" target="_blank">Research Features — BDAT overview</a></div>
+        </div> -->
+        </aside>
+    </main>
+
+    <footer>
+        <div class="container">
+        <!--Prototype page created for VS Code. Replace content and figures with your data.-->
+        </div>
+    </footer>
+
+    <script>
+        // Accordion: allow multiple open
+        document.querySelectorAll('.acc-button').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const id = btn.getAttribute('data-target');
+            const panel = document.getElementById(id);
+            panel.classList.toggle('show');
+        });
+        });
+
+        // Download simple HTML file (serialize current document)
+       
+    </script>
+    <php></php>
+    </body>
+    </html>
